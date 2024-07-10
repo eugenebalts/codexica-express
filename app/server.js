@@ -1,4 +1,6 @@
 import express from 'express';
+import userRouter from './routes/userRoutes.js';
+import routesList from './routes/routesList.js';
 
 class Server {
   app = express();
@@ -22,8 +24,12 @@ class Server {
 
   #configureRoutes() {
     this.app.get('/', (req, res) => {
-      res.json('Hello devs');
-    })
+      res.json('Hello devs!');
+    });
+
+    this.app.get('/api', (req, res) => {
+      res.json(routesList);
+    });
   }
 }
 

@@ -1,7 +1,7 @@
 {
   "name": "codexica-express",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "./app/app.js",
   "type": "module",
   "repository": "https://github.com/eugenebalts/codexica-express.git",
   "author": "Yauheni Baltsevich <norcobeatz@gmail.com>",
