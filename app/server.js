@@ -1,5 +1,5 @@
 import express from 'express';
-import userRouter from './routes/userRoutes.js';
+import usersRouter from './routes/usersRoutes.js';
 import routesList from './routes/routesList.js';
 
 class Server {
@@ -9,7 +9,6 @@ class Server {
   constructor() {
     this.#configureExpressApp();
     this.#configureRoutes();
-
   }
 
   startExpressServer() {
@@ -30,6 +29,8 @@ class Server {
     this.app.get('/api', (req, res) => {
       res.json(routesList);
     });
+
+    this.app.use('/api/users', usersRouter);
   }
 }
 
