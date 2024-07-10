@@ -1,0 +1,8 @@
+{
+  "name": "codexica-express",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/eugenebalts/codexica-express.git",
+  "author": "Yauheni Baltsevich <norcobeatz@gmail.com>",
+  "license": "MIT"
+}
