@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-const User = mongoose.model('User', userSchema);
+export const User = mongoose.model('User', userSchema);
 
 class UsersService {
   async getAll() {
@@ -37,6 +37,10 @@ class UsersService {
     const createdUser = await User.create({email});
 
     return createdUser;
+  }
+
+  async addOrder(user_id, order_id) {
+    return User.findByIdAndUpdate(user_id, { $push: { order_ids: order_id } }, { new: true });
   }
 }
 

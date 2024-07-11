@@ -1,5 +1,6 @@
 import express from 'express';
 import usersRouter from './routes/usersRoutes.js';
+import ordersRouter from './routes/ordersRoutes.js';
 import routesList from './routes/routesList.js';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -43,6 +44,7 @@ class Server {
     });
 
     this.app.use('/api/users', usersRouter);
+    this.app.use('/api/orders', ordersRouter);
   }
 }
 
