@@ -36,7 +36,7 @@ class Server {
 
   #configureRoutes() {
     this.app.get('/', (req, res) => {
-      res.json('Hello devs!');
+      res.json('Hello devs! Come to path /api to see all endpoints!');
     });
 
     this.app.get('/api', (req, res) => {

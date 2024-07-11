@@ -12,7 +12,7 @@ class OrdersController {
         orders,
       });
     } catch (err) {
-      res.status(500).json({message: err.message ?? STATUS_CODES['500']})
+      res.status(500).json({message: err.message ?? STATUS_CODES[500]})
     }
   }
 
@@ -21,7 +21,7 @@ class OrdersController {
       const { id } = req.params;
 
       if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: STATUS_CODES['400'] });
+        return res.status(400).json({ message: STATUS_CODES[400] });
       }
 
       const order = await ordersService.getById(id);
@@ -30,9 +30,9 @@ class OrdersController {
         return res.json(order);
       }
 
-      res.status(404).json({message: STATUS_CODES['404']});
+      res.status(404).json({message: STATUS_CODES[404]});
     } catch (err) {
-      res.status(500).json({message: err.message ?? STATUS_CODES['500']})
+      res.status(500).json({message: err.message ?? STATUS_CODES[500]})
     }
   }
 
@@ -41,7 +41,7 @@ class OrdersController {
       const { user_id, status, option, price } = req.body;
 
       if (!(user_id && status && option && price)) { // Are all positions required?
-        return res.status(400).json({message: STATUS_CODES['400']});
+        return res.status(400).json({message: STATUS_CODES[400]});
       }
 
       const user = await usersService.getById(user_id);
@@ -56,7 +56,7 @@ class OrdersController {
 
       res.status(201).json(createdOrder);
     } catch (err) {
-      res.status(500).json({message: err.message ?? STATUS_CODES['500']})
+      res.status(500).json({message: err.message ?? STATUS_CODES[500]})
     }
   }
 }
