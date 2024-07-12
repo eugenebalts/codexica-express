@@ -12,7 +12,7 @@ class OrdersController {
         orders,
       });
     } catch (err) {
-      res.status(500).json({message: err.message ?? STATUS_CODES[500]})
+      res.status(500).json({ message: err.message ?? STATUS_CODES[500] });
     }
   }
 
@@ -30,9 +30,9 @@ class OrdersController {
         return res.json(order);
       }
 
-      res.status(404).json({message: STATUS_CODES[404]});
+      res.status(404).json({ message: STATUS_CODES[404] });
     } catch (err) {
-      res.status(500).json({message: err.message ?? STATUS_CODES[500]})
+      res.status(500).json({ message: err.message ?? STATUS_CODES[500] });
     }
   }
 
@@ -40,23 +40,28 @@ class OrdersController {
     try {
       const { user_id, status, option, price } = req.body;
 
-      if (!(user_id && status && option && price)) { // Are all positions required?
-        return res.status(400).json({message: STATUS_CODES[400]});
+      if (!(user_id && status && option && price)) {
+        return res.status(400).json({ message: STATUS_CODES[400] });
       }
 
       const user = await usersService.getById(user_id);
-      
+
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
 
-      const createdOrder = await ordersService.create({user_id, status, option, price});
+      const createdOrder = await ordersService.create({
+        user_id,
+        status,
+        option,
+        price,
+      });
 
       await usersService.addOrder(createdOrder.user_id, createdOrder._id);
 
       res.status(201).json(createdOrder);
     } catch (err) {
-      res.status(500).json({message: err.message ?? STATUS_CODES[500]})
+      res.status(500).json({ message: err.message ?? STATUS_CODES[500] });
     }
   }
 }

@@ -14,19 +14,23 @@ class UsersService {
   }
 
   async getByEmail(email) {
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
 
     return user;
   }
 
   async create(email) {
-    const createdUser = await User.create({email});
+    const createdUser = await User.create({ email });
 
     return createdUser;
   }
 
   async addOrder(user_id, order_id) {
-    return User.findByIdAndUpdate(user_id, { $push: { order_ids: order_id } }, { new: true });
+    return User.findByIdAndUpdate(
+      user_id,
+      { $push: { order_ids: order_id } },
+      { new: true },
+    );
   }
 }
 

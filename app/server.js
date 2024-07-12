@@ -24,7 +24,6 @@ class Server {
       this.#app.listen(this.#PORT, () => {
         console.log('Server has been started on PORT ', this.#PORT);
       });
-
     } catch (err) {
       console.log(err);
     }
