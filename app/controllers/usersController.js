@@ -40,7 +40,7 @@ class UsersController {
       const { email } = req.body;
 
       if (!email) {
-        return res.status(403).json({message: STATUS_CODES[403]});
+        return res.status(400).json({message: STATUS_CODES[400]});
       }
 
       const isUserExists = await usersService.getByEmail(email);
