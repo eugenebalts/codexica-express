@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 class Server {
-  app = express();
+  #app = express();
   #PORT = process.env.PORT ?? 3000;
   #DB_URL = process.env.DB_URL;
 
@@ -21,7 +21,7 @@ class Server {
     try {
       await mongoose.connect(this.#DB_URL);
 
-      this.app.listen(this.#PORT, () => {
+      this.#app.listen(this.#PORT, () => {
         console.log('Server has been started on PORT ', this.#PORT);
       });
 
@@ -31,20 +31,20 @@ class Server {
   }
 
   #configureExpressApp() {
-    this.app.use(express.json());
+    this.#app.use(express.json());
   }
 
   #configureRoutes() {
-    this.app.get('/', (req, res) => {
+    this.#app.get('/', (req, res) => {
       res.json('Hello devs! Come to path /api to see all endpoints!');
     });
 
-    this.app.get('/api', (req, res) => {
+    this.#app.get('/api', (req, res) => {
       res.json(routesList);
     });
 
-    this.app.use('/api/users', usersRouter);
-    this.app.use('/api/orders', ordersRouter);
+    this.#app.use('/api/users', usersRouter);
+    this.#app.use('/api/orders', ordersRouter);
   }
 }
 
