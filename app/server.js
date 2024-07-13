@@ -4,6 +4,7 @@ import ordersRouter from './routes/ordersRoutes.js';
 import routesList from './routes/routesList.js';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import ErrorHandler from './middlewares/errorHandler.js';
 
 dotenv.config();
 
@@ -44,6 +45,8 @@ class Server {
 
     this.#app.use('/api/users', usersRouter);
     this.#app.use('/api/orders', ordersRouter);
+
+    this.#app.use(ErrorHandler);
   }
 }
 

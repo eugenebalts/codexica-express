@@ -1,59 +1,63 @@
-import { STATUS_CODES } from 'http';
 import usersService from '../services/usersService.js';
 import mongoose from 'mongoose';
+import {
+  BAD_REQUEST,
+  EMAIL_IS_BUSY,
+  INVALID_ID,
+  USER_NOT_FOUND,
+} from '../constants/errors.js';
+import AppError from '../utils/appError.js';
 
 class UsersController {
-  async getAll(req, res) {
+  async getAll(req, res, next) {
     try {
       const users = await usersService.getAll();
 
       res.json(users);
     } catch (err) {
-      res.status(500).json({ message: err.message ?? STATUS_CODES['500'] });
+      next(err);
     }
   }
 
-  async getById(req, res) {
+  async getById(req, res, next) {
     try {
       const { id } = req.params;
 
       if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: STATUS_CODES['400'] });
+        throw new AppError(INVALID_ID, 400);
       }
 
       const user = await usersService.getById(id);
 
       if (!user) {
-        res.status(404).json({ message: STATUS_CODES[404] });
+        throw new AppError(USER_NOT_FOUND, 404);
       }
 
       res.json(user);
     } catch (err) {
-      res.status(500).json({ message: err.message ?? STATUS_CODES[500] });
+      next(err);
     }
   }
 
-  async createUser(req, res) {
+  async createUser(req, res, next) {
     try {
       const { email } = req.body;
 
       if (!email) {
-        return res.status(400).json({ message: STATUS_CODES[400] });
+        throw new AppError(BAD_REQUEST, 400);
       }
 
       const isUserExists = await usersService.getByEmail(email);
 
       if (isUserExists) {
-        return res.status(409).json({
-          message: `${STATUS_CODES[409]}: User with this email already exists`,
-        });
+        throw new AppError(EMAIL_IS_BUSY, 409);
       }
 
       const user = await usersService.create(email);
 
       res.status(201).json(user);
     } catch (err) {
-      res.status(500).json({ message: err.message ?? STATUS_CODES[500] });
+      next(err);
     }
   }
 }

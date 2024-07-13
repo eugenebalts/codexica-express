@@ -1,51 +1,57 @@
-import { STATUS_CODES } from 'http';
 import mongoose from 'mongoose';
 import ordersService from '../services/ordersService.js';
 import usersService from '../services/usersService.js';
+import {
+  BAD_REQUEST,
+  INVALID_ID,
+  ORDER_NOT_FOUND,
+  USER_NOT_FOUND,
+} from '../constants/errors.js';
+import AppError from '../utils/appError.js';
 
 class OrdersController {
-  async getAll(req, res) {
+  async getAll(req, res, next) {
     try {
       const orders = await ordersService.getAll();
 
       res.json(orders);
     } catch (err) {
-      res.status(500).json({ message: err.message ?? STATUS_CODES[500] });
+      next(err);
     }
   }
 
-  async getById(req, res) {
+  async getById(req, res, next) {
     try {
       const { id } = req.params;
 
       if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: STATUS_CODES[400] });
+        throw new AppError(INVALID_ID, 400);
       }
 
       const order = await ordersService.getById(id);
 
       if (!order) {
-        return res.status(404).json({ message: STATUS_CODES[404] });
+        throw new AppError(ORDER_NOT_FOUND, 404);
       }
 
       res.json(order);
     } catch (err) {
-      res.status(500).json({ message: err.message ?? STATUS_CODES[500] });
+      next(err);
     }
   }
 
-  async createOrder(req, res) {
+  async createOrder(req, res, next) {
     try {
       const { user_id, status, option, price } = req.body;
 
       if (!(user_id && status && option && price)) {
-        return res.status(400).json({ message: STATUS_CODES[400] });
+        throw new AppError(BAD_REQUEST, 400);
       }
 
       const user = await usersService.getById(user_id);
 
       if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+        throw new AppError(USER_NOT_FOUND, 422);
       }
 
       const createdOrder = await ordersService.create({
@@ -59,7 +65,7 @@ class OrdersController {
 
       res.status(201).json(createdOrder);
     } catch (err) {
-      res.status(500).json({ message: err.message ?? STATUS_CODES[500] });
+      next(err);
     }
   }
 }
