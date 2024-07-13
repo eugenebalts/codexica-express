@@ -7,9 +7,7 @@ class UsersController {
     try {
       const users = await usersService.getAll();
 
-      res.json({
-        users,
-      });
+      res.json(users);
     } catch (err) {
       res.status(500).json({ message: err.message ?? STATUS_CODES['500'] });
     }
@@ -25,11 +23,11 @@ class UsersController {
 
       const user = await usersService.getById(id);
 
-      if (user) {
-        return res.json(user);
+      if (!user) {
+        res.status(404).json({ message: STATUS_CODES[404] });
       }
 
-      res.status(404).json({ message: STATUS_CODES[404] });
+      res.json(user);
     } catch (err) {
       res.status(500).json({ message: err.message ?? STATUS_CODES[500] });
     }
@@ -46,11 +44,9 @@ class UsersController {
       const isUserExists = await usersService.getByEmail(email);
 
       if (isUserExists) {
-        return res
-          .status(409)
-          .json({
-            message: `${STATUS_CODES[409]}: User with this email already exists`,
-          });
+        return res.status(409).json({
+          message: `${STATUS_CODES[409]}: User with this email already exists`,
+        });
       }
 
       const user = await usersService.create(email);

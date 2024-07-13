@@ -8,9 +8,7 @@ class OrdersController {
     try {
       const orders = await ordersService.getAll();
 
-      res.json({
-        orders,
-      });
+      res.json(orders);
     } catch (err) {
       res.status(500).json({ message: err.message ?? STATUS_CODES[500] });
     }
@@ -26,11 +24,11 @@ class OrdersController {
 
       const order = await ordersService.getById(id);
 
-      if (order) {
-        return res.json(order);
+      if (!order) {
+        return res.status(404).json({ message: STATUS_CODES[404] });
       }
 
-      res.status(404).json({ message: STATUS_CODES[404] });
+      res.json(order);
     } catch (err) {
       res.status(500).json({ message: err.message ?? STATUS_CODES[500] });
     }
